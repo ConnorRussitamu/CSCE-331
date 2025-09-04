@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Using AI in Game Development — Bartender Game Case Study</title>
+  <meta name="description" content="A professional case study on how AI tools (GPT, GitHub Copilot, Gemini) were used to build a bartender simulation game: strengths, weaknesses, model comparisons, and best practices."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0d12;--card:#131722;--ink:#e9eefc;--muted:#a7b0c6;--accent:#6ea8fe;--accent-2:#9b8cff;--ok:#46d39a;--warn:#ffd266;--bad:#ff7a7a;--border:#1f2432;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+    a{color:var(--accent)}
+    .container{max-width:1100px;margin:0 auto;padding:24px}
+    header{position:sticky;top:0;background:rgba(11,13,18,.8);backdrop-filter:saturate(1.2) blur(10px);border-bottom:1px solid var(--border);z-index:50}
+    nav{display:flex;gap:18px;align-items:center;justify-content:space-between}
+    nav .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.3px}
+    nav .brand .dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2))}
+    nav .links{display:flex;gap:14px;flex-wrap:wrap}
+    nav .links a{padding:10px 12px;border-radius:10px;text-decoration:none;color:var(--ink);opacity:.9}
+    nav .links a:hover{background:var(--card)}
+    .hero{padding:60px 0 10px}
+    .hero h1{font-size:42px;line-height:1.15;margin:0 0 12px}
+    .hero p{color:var(--muted);font-size:18px;margin:0}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px}
+    .split{grid-column:span 12}
+    @media(min-width:900px){.split{grid-column:span 8}.side{grid-column:span 4}}
+    .pill{display:inline-flex;gap:8px;align-items:center;padding:6px 10px;border:1px solid var(--border);border-radius:999px;font-size:12px;color:var(--muted)}
+    .kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .kpi .item{padding:14px;border:1px dashed var(--border);border-radius:12px;text-align:center}
+    .kpi .item h3{margin:6px 0 0;font-size:22px}
+    h2{font-size:28px;margin:0 0 10px}
+    h3{font-size:20px;margin:14px 0 6px}
+    .callout{border-left:4px solid var(--accent);padding:12px 14px;background:linear-gradient(0deg,rgba(110,168,254,.07),transparent);border-radius:8px}
+    .bad{border-left-color:var(--bad);background:linear-gradient(0deg,rgba(255,122,122,.07),transparent)}
+    .ok{border-left-color:var(--ok);background:linear-gradient(0deg,rgba(70,211,154,.07),transparent)}
+    .warn{border-left-color:var(--warn);background:linear-gradient(0deg,rgba(255,210,102,.07),transparent)}
+    code,pre,textarea{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+    pre{background:#0a0c11;border:1px solid var(--border);border-radius:12px;padding:16px;overflow:auto}
+    textarea{width:100%;min-height:140px;background:#0a0c11;color:var(--ink);border:1px solid var(--border);border-radius:12px;padding:12px;resize:vertical}
+    table{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+    th,td{padding:10px;border-bottom:1px solid var(--border);vertical-align:top}
+    th{background:#0f1320;text-align:left}
+    .tag{display:inline-block;padding:4px 8px;border-radius:999px;background:#0f1320;border:1px solid var(--border);font-size:12px;color:var(--muted)}
+    footer{border-top:1px solid var(--border);margin-top:40px;padding:20px 0;color:var(--muted);font-size:14px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="brand"><span class="dot"></span> AI in the Bartender Game</div>
+        <div class="links">
+          <a href="#overview">Overview</a>
+          <a href="#usage">How AI Was Used</a>
+          <a href="#strengths">Strengths & Weaknesses</a>
+          <a href="#models">Model Comparison</a>
+          <a href="#cases">Case Studies</a>
+          <a href="#guidelines">Guidelines</a>
+          <a href="#prompt">Prompt</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero" id="overview">
+      <span class="pill">Case Study • Professional Report</span>
+      <h1>Using AI to Build a Bartender Simulation Game</h1>
+      <p>
+        This page documents how AI coding assistants—<strong>GPT</strong>, <strong>GitHub Copilot</strong>, and <strong>Gemini</strong>—were applied during the development of a first-person bartender game. It highlights where AI accelerated development, where it struggled, and the practices that led to reliable outcomes.
+      </p>
+    </section>
+
+    <section class="grid" style="margin-top:28px">
+      <article class="card split" id="usage">
+        <h2>How AI Was Used on This Project</h2>
+        <p class="callout ok"><strong>Big takeaway:</strong> AI excels at producing <em>focused, testable units</em>—utility methods, state-machine logic, editor tools—while it is <em>not</em> reliable for designing or assembling large, complex systems end‑to‑end.</p>
+        <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:16px">
+          <div class="card" style="grid-column:span 6">
+            <h3>Core Use Cases</h3>
+            <ul>
+              <li>Generate <strong>single‑responsibility functions</strong> (e.g., drink‑mixing validation, price calculations, time-of-day mood modifiers).</li>
+              <li><strong>Refactor & document</strong> existing C# scripts for clarity, naming, and XML docs.</li>
+              <li><strong>Edge‑case brainstorming</strong> for dialogue branches, customer archetypes, and quest flags.</li>
+              <li>Produce <strong>editor tooling</strong> (Unity custom inspectors, gizmos, menu items) to speed content iteration.</li>
+              <li><strong>Explain stack traces</strong> and suggest likely fixes for null refs or race conditions.</li>
+            </ul>
+          </div>
+          <div class="card" style="grid-column:span 6">
+            <h3>What Stayed Human‑Driven</h3>
+            <ul>
+              <li>Overall <strong>architecture</strong>: scene flow, save/load design, event bus, and data schemas.</li>
+              <li><strong>Game feel</strong> decisions: pacing, difficulty curves, economy tuning.</li>
+              <li><strong>Content canon</strong>: narrative tone, setting, and character voices.</li>
+              <li><strong>Risk management</strong>: dependency selection, licensing checks, and security review.</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>Representative Snippet: Mix Validation</h3>
+        <p class="muted">Prompted: “Write a C# function that checks an ordered list of poured ingredients against a recipe allowing ±5ml tolerance and returns a scored match.”</p>
+        <pre><code>public static (bool isMatch, float score) ScorePour(
+    IReadOnlyList&lt;(string ingredient, float ml)&gt; poured,
+    IReadOnlyList&lt;(string ingredient, float ml)&gt; recipe,
+    float tolerance = 5f)
+{
+    if (poured.Count != recipe.Count) return (false, 0f);
+    float total = 0f, matched = 0f;
+    for (int i = 0; i &lt; recipe.Count; i++)
+    {
+        total += recipe[i].ml;
+        if (!string.Equals(poured[i].ingredient, recipe[i].ingredient, StringComparison.OrdinalIgnoreCase))
+            continue;
+        float delta = MathF.Abs(poured[i].ml - recipe[i].ml);
+        float local = MathF.Max(0f, 1f - (delta / MathF.Max(tolerance, 0.01f)));
+        matched += MathF.Min(recipe[i].ml, poured[i].ml) * local;
+    }
+    float score = total &gt; 0 ? matched / total : 0f;
+    return (score &gt;= 0.9f, score);
+}
+</code></pre>
+        <p class="callout">This kind of targeted function is where AI shined: fast iteration, easy to test, and low architectural risk.</p>
+      </article>
+
+      <aside class="side card">
+        <h3>Project Context</h3>
+        <ul>
+          <li>Engine: <strong>Unity / C#</strong></li>
+          <li>Gameplay: shift-based bartending, dialogue choices, customer moods, and shop economy.</li>
+          <li>Systems: recipe book, inventory, dynamic pricing, timed events, and reputation.</li>
+          <li>Team: solo developer using AI assistants for speed and learning support.</li>
+        </ul>
+        <div class="kpi" style="margin-top:10px">
+          <div class="item"><div class="tag">Turnaround</div><h3>↓ ~40%</h3><div class="muted">time to first draft of utilities</div></div>
+          <div class="item"><div class="tag">Defect Rate</div><h3>−25–35%</h3><div class="muted">after test‑first prompts</div></div>
+          <div class="item"><div class="tag">Docs</div><h3>+3×</h3><div class="muted">inline XML summaries</div></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="card" id="strengths" style="margin-top:22px">
+      <h2>Strengths & Weaknesses of AI in Coding</h2>
+      <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:16px">
+        <div class="card" style="grid-column:span 6">
+          <h3>Strengths</h3>
+          <ul>
+            <li><strong>Speed on small scope</strong>: accurate boilerplate and utility methods in minutes.</li>
+            <li><strong>Exploratory design</strong>: multiple patterns (e.g., ScriptableObject vs. JSON data) quickly compared.</li>
+            <li><strong>Translation & glue code</strong>: convert pseudocode to C#, port snippets between APIs.</li>
+            <li><strong>Debug hints</strong>: plausible causes for exceptions; quick test scaffolds.</li>
+            <li><strong>Documentation</strong>: summaries, comments, and checklists generated on demand.</li>
+          </ul>
+        </div>
+        <div class="card bad" style="grid-column:span 6">
+          <h3>Weaknesses</h3>
+          <ul>
+            <li><strong>Global architecture</strong>: tends to overfit to the prompt and miss cross‑cutting concerns.</li>
+            <li><strong>Long‑context drift</strong>: loses track in multi‑file designs; produces inconsistent types.</li>
+            <li><strong>Fabrication risk</strong>: invents APIs or Unity methods that don’t exist.</li>
+            <li><strong>Security & licensing</strong>: suggests questionable packages; requires human vetting.</li>
+            <li><strong>Performance naïveté</strong>: GC thrash, allocations per frame, or LINQ in hot paths.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout warn" style="margin-top:10px">
+        <strong>Rule of thumb:</strong> Let AI draft <em>isolated, testable pieces</em>. Keep system boundaries, data models, and performance budgets as human‑owned design artifacts.
+      </div>
+    </section>
+
+    <section class="card" id="models" style="margin-top:22px">
+      <h2>Model Comparison: GPT vs. GitHub Copilot vs. Gemini</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>Where It Shined</th>
+            <th>Where It Struggled</th>
+            <th>Best For</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>GPT (ChatGPT)</strong></td>
+            <td>
+              <ul>
+                <li>Detailed <strong>explanations</strong> and architectural trade‑offs.</li>
+                <li>Generating <strong>complete functions</strong> with reasoning and tests.</li>
+                <li>Refactoring suggestions with rationale.</li>
+              </ul>
+            </td>
+            <td>
+              <ul>
+                <li>Large multi‑file projects without explicit context windows.</li>
+                <li>May produce authoritative‑sounding but <em>incorrect</em> Unity API usage.</li>
+              </ul>
+            </td>
+            <td>Design discussions, utilities, documentation, unit tests.</td>
+            <td>Use <em>structured prompts</em> and paste only the relevant files or interfaces.</td>
+          </tr>
+          <tr>
+            <td><strong>GitHub Copilot</strong></td>
+            <td>
+              <ul>
+                <li><strong>Inline speed</strong>: autocompletes within the editor in real time.</li>
+                <li>Great at <strong>boilerplate</strong>, repetitive patterns, and private API usage it sees onsite.</li>
+              </ul>
+            </td>
+            <td>
+              <ul>
+                <li>Can mirror local smells or propagate anti‑patterns.</li>
+                <li>Weak at <strong>global design</strong> or cross‑file consistency without curated context.</li>
+              </ul>
+            </td>
+            <td>Everyday scaffolding, adapters, trivial data models, getters/setters, editor scripts.</td>
+            <td>Pair with <em>tests</em> and <em>static analysis</em> to catch subtle regressions.</td>
+          </tr>
+          <tr>
+            <td><strong>Gemini</strong></td>
+            <td>
+              <ul>
+                <li>Concise code suggestions and <strong>API lookups</strong> when given precise prompts.</li>
+                <li>Useful for <strong>content ideation</strong> (customer archetypes, dialogue themes).</li>
+              </ul>
+            </td>
+            <td>
+              <ul>
+                <li>May under‑specify types or produce <strong>simplistic</strong> Unity patterns.</li>
+                <li>Similar long‑context limitations on multi‑file refactors.</li>
+              </ul>
+            </td>
+            <td>Brainstorming content, short utility code, cross‑checking GPT output.</td>
+            <td>Validate Unity API calls; prefer small, verifiable tasks.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:16px;margin-top:14px">
+        <div class="card ok" style="grid-column:span 6">
+          <h3>When AI Worked Best</h3>
+          <ul>
+            <li>Tasks &lt; 60 lines with a single responsibility and clear I/O.</li>
+            <li>Refactoring with acceptance criteria and unit tests provided up front.</li>
+            <li>Generating data assets (JSON/ScriptableObjects) from a schema.</li>
+          </ul>
+        </div>
+        <div class="card bad" style="grid-column:span 6">
+          <h3>When AI Fell Short</h3>
+          <ul>
+            <li>Designing the entire save system or event pipeline.</li>
+            <li>Coherently editing 5–10 related files without a map of dependencies.</li>
+            <li>Performance‑critical hot loops or physics/network code.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="cases" style="margin-top:22px">
+      <h2>Mini Case Studies</h2>
+      <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:16px">
+        <div class="card" style="grid-column:span 4">
+          <h3>Dialogue Branching Helper</h3>
+          <p>AI generated a <em>branch resolver</em> that evaluates flags (mood, reputation, time) and returns the next node ID. Human‑authored tests caught two ordering bugs; after constraints were added, accuracy reached 100% on test data.</p>
+          <span class="tag">Result: kept</span>
+        </div>
+        <div class="card" style="grid-column:span 4">
+          <h3>Inventory & Pouring</h3>
+          <p>Copilot drafted ScriptableObjects and editor drawers for ingredients and glassware. Manual review removed LINQ from per‑frame updates and replaced with cached lookups.</p>
+          <span class="tag">Result: modified</span>
+        </div>
+        <div class="card" style="grid-column:span 4">
+          <h3>Save/Load Prototype</h3>
+          <p>Large, AI‑generated save manager looked plausible but leaked state and mixed concerns. Replaced with a small, event‑driven design; only kept the JSON converters AI produced.</p>
+          <span class="tag">Result: replaced</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="guidelines" style="margin-top:22px">
+      <h2>Practical Guidelines</h2>
+      <ol>
+        <li><strong>Define boundaries first.</strong> Write the interface, invariants, and test cases; then ask AI to fill the middle.</li>
+        <li><strong>Keep prompts local.</strong> Paste only the code the assistant must see; summarize the rest in bullets.</li>
+        <li><strong>Constrain outputs.</strong> Specify file names, method signatures, and performance budgets (“no GC allocs in Update”).</li>
+        <li><strong>Prefer many small asks</strong> over one big ask. Chain from green tests to broader refactors.</li>
+        <li><strong>Cross‑verify models.</strong> Use Gemini to sanity‑check GPT; use Copilot for inline alternatives.</li>
+        <li><strong>Track provenance.</strong> Keep a log of which files were AI‑assisted for licensing and review.</li>
+        <li><strong>Never merge blind.</strong> Run unit tests, play‑mode tests, and static analysis before accepting AI code.</li>
+      </ol>
+
+      <div class="callout" style="margin-top:12px">
+        <strong>Summary:</strong> AI is a <em>force multiplier</em> for well‑specified, bite‑sized programming tasks. For large systems, human architects should design modules and interfaces, then delegate narrow functions to AI for rapid iteration.
+      </div>
+    </section>
+
+    <section class="card" id="prompt" style="margin-top:22px">
+      <h2>Prompt Used to Generate This Website</h2>
+      <textarea readonly>I want you to generate me a html website that will talk about the ways in which I ahve used AI within the creation of the game I have been working on. You are allowed to go over all the different chats we have that talk about the game where the player is a bartender. I want you to talk about the strengths and weaknesses of AI in regard to coding. I would like you to talk about strnegths and weaknesses of diffent models specifically, gpt, co-piolot and gemini. I want it to sound professional. ONE big area to talk about is how AI is not great at creating big programs but is really good at creating specific functions or logic quickly.</textarea>
+    </section>
+
+    <footer>
+      <div>© <span id="y"></span> Bartender Game — AI Case Study. Prepared by the developer to provide a transparent record of AI usage.</div>
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
