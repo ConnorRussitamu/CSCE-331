@@ -1,0 +1,93 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: rgb(255, 253, 253);
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column; /* Stack sections vertically */
+    align-items: center;    /* Center sections horizontally */
+    min-height: 100vh;
+    gap: 30px;              /* Space between sections */
+    position: relative;
+}
+
+.header-box {
+    width: 100%;
+    background: maroon;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    padding: 30px 0 10px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+a{
+    color: white;
+}
+a:hover{
+    color: darkgray;
+}
+
+.about-box {
+    width: 60%;
+    background: maroon;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    color: white;
+    flex: 1;
+    margin: 0 auto;
+}
+.bottom-box {
+    width: 100%;
+    background: maroon;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    padding: 30px 0 10px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    flex-shrink: 0;
+}
+.profile-photo {
+    width: 200px;
+    height: 300px;
+    border-radius: 15px; /* Adjust px for more/less rounding */
+    object-fit: cover;   /* Keeps aspect ratio and fills the box */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08); /* Optional: subtle shadow */
+}
+.nav-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    position: flex;
+    /* top: 50%;
+    right: 2%;
+    transform: translateY(-50%);
+    z-index: 1000; */
+}
+
+.nav-box {
+    width: 200px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: maroon;
+    color: white;
+    font-size: 1.1em;
+    border: 2px solid white;
+    border-radius: 10px;
+    text-decoration: none;
+    font-family: inherit;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.08);
+}
+.nav-box:hover {
+    background-color: white;
+    color: maroon;
+    cursor: pointer;
+    border-color: maroon;
+}
